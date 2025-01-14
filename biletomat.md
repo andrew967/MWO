@@ -1,3 +1,4 @@
+## Historie
 1. Jako biletomat, chcę automatycznie aktualizować listę dostępnych biletów i ich
 cen, aby zapewnić zgodność z polityką przewoźnika.
 2. Jako biletomat, chcę rejestrować wszystkie transakcje i wysyłać raporty do
@@ -9,3 +10,17 @@ czytnik gotówki, NFC), aby obsługiwać różnorodne transakcje.
 5. Jako biletomat, chcę wydawać resztę w gotówce, jeśli użytkownik zapłaci
 nadmiarowo, aby transakcja była zgodna z oczekiwaniami.
 
+## Diagramy przypadków użycia
+
+
+### Obsługa wyboru języka
+
+```mermaid
+
+flowchart TD
+  U[Biletomat] --> A[Wyświetlenie opcji językowych]
+  A --> B[Rejestracja wyboru języka]  
+  B --> C[Dostosowanie interfejsu]  
+  A -->|Include| D[Opcje językowe]  
+  C -->|Extend| E[Powrót do języka domyślnego]
+```
