@@ -1,3 +1,4 @@
+## Historie
 1. Jako system transakcyjny, chcę informować biletomat o statusie transakcji
 (sukces, odrzucenie, brak środków), aby użytkownik wiedział, co dalej robić.
 2. Jako system transakcyjny, chcę rejestrować dane o transakcjach (czas,
