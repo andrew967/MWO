@@ -11,7 +11,21 @@ czytnik gotówki, NFC), aby obsługiwać różnorodne transakcje.
 nadmiarowo, aby transakcja była zgodna z oczekiwaniami.
 
 ## Diagramy przypadków użycia
+### Wyświetlenie dostępnych biletów
 
+```mermaid
+flowchart TD  
+    U[Użytkownik] --> A[Uruchomienie ekranu powitalnego]  
+    A --> B[Pobranie listy biletów]  
+    B --> C[Wyświetlenie biletów]  
+    C --> D[Oczekiwanie na wybór użytkownika]  
+
+    %% Relacje Include  
+    B -->|Include| E[Aktualizacja biletów]  
+
+    %% Relacje Extend  
+    B -->|Extend| F[Ostrzeżenie o braku danych]  
+```
 
 ### Obsługa wyboru języka
 
