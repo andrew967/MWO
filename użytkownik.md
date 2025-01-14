@@ -13,3 +13,4 @@ jak dokonać zakupu krok po kroku.
 7. Jako użytkownik, chcę widzieć czas pozostały na decyzję (np. wyświetlany
 licznik czasu), aby móc szybko podjąć działanie.
 
+Diagramy przypadków użycia:
