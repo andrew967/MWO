@@ -38,3 +38,9 @@ flowchart TD
   A -->|Include| D[Opcje językowe]  
   C -->|Extend| E[Powrót do języka domyślnego]
 ```
+### Wyświetlenie dostępnych biletów i Obsługa wyboru języka
+```mermaid
+flowchart TD  
+     
+ 
+```
