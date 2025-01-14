@@ -1,3 +1,4 @@
+## Historie
 1. Jako system wsparcia technicznego, chcę automatycznie monitorować stan
 biletomatów (np. brak papieru, awaria terminala), aby reagować na problemy w
 krótkim czasie.
