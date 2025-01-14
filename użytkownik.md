@@ -1,3 +1,4 @@
+## Historie
 1. Jako użytkownik, chcę szybko wybrać rodzaj biletu, aby zminimalizować czas
 spędzony przy biletomacie.
 2. Jako użytkownik, chcę mieć możliwość wyboru języka, aby móc korzystać z
@@ -13,7 +14,6 @@ jak dokonać zakupu krok po kroku.
 7. Jako użytkownik, chcę widzieć czas pozostały na decyzję (np. wyświetlany
 licznik czasu), aby móc szybko podjąć działanie.
 
-# Diagramy przypadków użycia:
 
 ## DIAGRAMY PRZYPADKÓW UŻYCIA
 ### SZYBKI WYBÓR RODZAJU BILETU
@@ -35,3 +35,25 @@ flowchart TD
     C -->|Extend| H
 
 ```
+
+### Wybór języka
+
+```mermaid
+flowchart TD  
+    U[Użytkownik] --> A[Rozpoczęcie interakcji]  
+    A --> B[Wyświetlenie opcji języka]  
+    B --> C[Wybór języka]  
+    C --> D[Dostosowanie interfejsu]  
+    C --> F[Anulowanie transakcji]  
+
+  
+    C -->|Include| G[Domyślny język]  
+    D -->|Include| F  
+
+    B -->|Extend| H[Lista popularnych języków]
+
+
+
+```
+
+
