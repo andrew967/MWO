@@ -13,4 +13,25 @@ jak dokonać zakupu krok po kroku.
 7. Jako użytkownik, chcę widzieć czas pozostały na decyzję (np. wyświetlany
 licznik czasu), aby móc szybko podjąć działanie.
 
-Diagramy przypadków użycia:
+# Diagramy przypadków użycia:
+
+## DIAGRAMY PRZYPADKÓW UŻYCIA
+### SZYBKI WYBÓR RODZAJU BILETU
+```mermaid
+flowchart TD
+    U[Użytkownik] --> A[Rozpoczęcie interakcji]
+    A --> B[Wybór kategorii]
+    B --> C[Wybór biletu]
+    C --> D[Wyświetlenie podsumowania]
+    D --> E[Potwierdzenie wyboru]
+    E --> F[Anulowanie transakcji]
+
+    %% Relacje Include
+    C -->|Include| G[Sprawdzenie biletów]
+    E -->|Include| F
+
+    %% Relacje Extend
+    B -->|Extend| H[Podpowiedź interfejsu]
+    C -->|Extend| H
+
+```
