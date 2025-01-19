@@ -38,6 +38,37 @@ flowchart TD
   A -->|Include| D[Opcje językowe]  
   C -->|Extend| E[Powrót do języka domyślnego]
 ```
+
+### Wyświetlenie podsumowania transakcji
+```mermaid
+flowchart TD
+    B((Biletomat))
+    U((Użytkownik))
+    
+    %% Główne przypadki użycia
+    A[Gromadzenie danych o transakcji]
+    C[Wyświetlenie podsumowania]
+    D[Oczekiwanie na decyzję użytkownika]
+    
+    %% Relacje Include
+    E[Podsumowanie transakcji]
+    
+    %% Relacja Extend
+    F[Obsługa anulowania]
+    
+    %% Połączenia głównego przepływu
+    B --> A
+    A --> C
+    C --> D
+    U --> D
+    
+    %% Relacje Include
+    C -->|Include| E
+    
+    %% Relacja Extend
+    D -->|Extend| F
+    
+```
 ### Wyświetlenie dostępnych biletów i Obsługa wyboru języka
 ```mermaid
 flowchart TD  
