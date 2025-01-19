@@ -51,8 +51,43 @@ flowchart TD
     D -->|Include| F  
 
     B -->|Extend| H[Lista popularnych języków]
+```
 
-
+### Sprawdzenie poprawności transakcji
+```mermaid
+flowchart TD
+    U((Użytkownik))
+    
+    %% Główne przypadki użycia
+    A[Wybór biletu i płatności]
+    B[Wyświetlenie podsumowania]
+    C[Potwierdzenie lub cofnięcie]
+    D[Kontynuacja lub anulowanie]
+    
+    %% Relacje Include
+    E[Podsumowanie transakcji]
+    F[Anulowanie transakcji]
+    
+    %% Relacja Extend
+    G[Ostrzeżenie o błędzie]
+    
+    %% Połączenia głównego przepływu
+    U --> A
+    A --> B
+    B --> C
+    C --> D
+    
+    %% Relacje Include
+    B -->|Include| E
+    A & B & C & D -->|Include| F
+    
+    %% Relacja Extend
+    A & B -->|Extend| G
+    
+    %% Stylizacja
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px
+    classDef actor fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    class U actor
 
 ```
 
