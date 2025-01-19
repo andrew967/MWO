@@ -87,4 +87,55 @@ flowchart TD
 
 ```
 
+###  SZYBKI WYBÓR RODZAJU BILETU + Wybór języka + Sprawdzenie poprawności transakcji
+```mermaid
+flowchart TD
+    U((Użytkownik))
+    
+    %% Rozpoczęcie interakcji
+    START[Rozpoczęcie interakcji]
+    U --> START
+    
+    %% Wybór języka
+    LANG1[Wyświetlenie opcji języka]
+    LANG2[Wybór języka]
+    LANG3[Dostosowanie interfejsu]
+    LANG4[Domyślny język]
+    LANG5[Lista popularnych języków]
+    
+    START --> LANG1
+    LANG1 --> LANG2
+    LANG2 --> LANG3
+    LANG2 -->|Include| LANG4
+    LANG1 -->|Extend| LANG5
+    
+    %% Szybki wybór biletu
+    TICKET1[Wybór kategorii]
+    TICKET2[Wybór biletu]
+    TICKET3[Sprawdzenie biletów]
+    TICKET4[Podpowiedź interfejsu]
+    
+    LANG3 --> TICKET1
+    TICKET1 --> TICKET2
+    TICKET2 -->|Include| TICKET3
+    TICKET1 & TICKET2 -->|Extend| TICKET4
+    
+    %% Sprawdzenie poprawności
+    CHECK1[Wyświetlenie podsumowania]
+    CHECK2[Potwierdzenie lub cofnięcie]
+    CHECK3[Kontynuacja lub anulowanie]
+    CHECK4[Podsumowanie transakcji]
+    CHECK5[Ostrzeżenie o błędzie]
+    
+    TICKET2 --> CHECK1
+    CHECK1 --> CHECK2
+    CHECK2 --> CHECK3
+    CHECK1 -->|Include| CHECK4
+    TICKET2 & CHECK1 -->|Extend| CHECK5
+    
+    %% Wspólne funkcje
+    CANCEL[Anulowanie transakcji]
+    TICKET1 & TICKET2 & CHECK1 & CHECK2 & CHECK3 -->|Include| CANCEL
+    LANG2 --> CANCEL
+```
 
