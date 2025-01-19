@@ -83,11 +83,7 @@ flowchart TD
     
     %% Relacja Extend
     A & B -->|Extend| G
-    
-    %% Stylizacja
-    classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px
-    classDef actor fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
-    class U actor
+
 
 ```
 
