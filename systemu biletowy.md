@@ -22,3 +22,17 @@ flowchart TD
     %% Relacje Extend
     PrzeslanieListy -->|Extend| BladKomunikacji[Błąd komunikacji]
 ```
+### Weryfikacja ważności biletu
+```mermaid
+flowchart TD
+    Kontroler --> OdebranieZadaniaWeryfikacji[Odebranie żądania weryfikacji]
+    SystemZglaszajacy --> OdebranieZadaniaWeryfikacji
+    OdebranieZadaniaWeryfikacji --> AnalizaDanychBiletu[Analiza danych biletu]
+    AnalizaDanychBiletu --> PrzeslanieWyniku[Przesłanie wyniku weryfikacji]
+
+    %% Relacje Include
+    OdebranieZadaniaWeryfikacji -->|Include| AnalizaDanychBiletu
+
+    %% Relacje Extend
+    PrzeslanieWyniku -->|Extend| PowiadomienieOszustwo[Powiadomienie o oszustwie]
+```
