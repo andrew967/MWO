@@ -8,3 +8,17 @@ ruch i sprzedaż w systemie.
 4. Jako system biletowy, chcę współpracować z aplikacjami mobilnymi, aby
 użytkownik mógł uzyskać elektroniczny bilet w przypadku takiego wyboru.
 
+## DIAGRAMY PRZYPADKÓW UŻYCIA
+### Dostarczanie listy biletów do biletomatu
+```mermaid
+flowchart TD
+    Biletomat --> OdebranieZadaniaListy[Odebranie żądania listy biletów]
+    OdebranieZadaniaListy --> SprawdzenieTaryf[Sprawdzenie bazy taryf]
+    SprawdzenieTaryf --> PrzeslanieListy[Przesłanie listy biletów]
+
+    %% Relacje Include
+    OdebranieZadaniaListy -->|Include| SprawdzenieTaryf
+
+    %% Relacje Extend
+    PrzeslanieListy -->|Extend| BladKomunikacji[Błąd komunikacji]
+```
