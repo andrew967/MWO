@@ -69,9 +69,58 @@ flowchart TD
     D -->|Extend| F
     
 ```
-### Wyświetlenie dostępnych biletów i Obsługa wyboru języka
+### Wyświetlenie dostępnych biletów + Obsługa wyboru języka + Wyświetlenie podsumowania transakcji
 ```mermaid
-flowchart TD  
-     
- 
+flowchart TD
+    U((Użytkownik))
+    B((Biletomat))
+    
+    %% Ekran powitalny i wyświetlenie biletów
+    A1[Uruchomienie ekranu powitalnego]
+    A2[Pobranie listy biletów]
+    A3[Wyświetlenie biletów]
+    A4[Oczekiwanie na wybór użytkownika]
+    A5[Aktualizacja biletów]
+    A6[Ostrzeżenie o braku danych]
+    
+    %% Wybór języka
+    L1[Wyświetlenie opcji językowych]
+    L2[Rejestracja wyboru języka]
+    L3[Dostosowanie interfejsu]
+    L4[Opcje językowe]
+    L5[Powrót do języka domyślnego]
+    
+    %% Podsumowanie transakcji
+    T1[Gromadzenie danych o transakcji]
+    T2[Wyświetlenie podsumowania]
+    T3[Oczekiwanie na decyzję użytkownika]
+    T4[Podsumowanie transakcji]
+    T5[Obsługa anulowania]
+    
+    %% Główny przepływ - ekran powitalny
+    B --> A1
+    A1 --> A2
+    A2 --> A3
+    A3 --> A4
+    A2 -->|Include| A5
+    A2 -->|Extend| A6
+    
+    %% Główny przepływ - wybór języka
+    B --> L1
+    L1 --> L2
+    L2 --> L3
+    L1 -->|Include| L4
+    L3 -->|Extend| L5
+    
+    %% Główny przepływ - podsumowanie
+    A4 --> T1
+    T1 --> T2
+    T2 --> T3
+    T2 -->|Include| T4
+    T3 -->|Extend| T5
+    
+    %% Interakcje użytkownika
+    U --> A4
+    U --> L2
+    U --> T3
 ```
