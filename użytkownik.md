@@ -115,8 +115,8 @@ flowchart TD
     U --- CANCEL
  ```
 
-
-## Wybór języka
+## Diagram sekwencyj
+### Wybór języka
 ```mermaid
 sequenceDiagram
     autonumber
