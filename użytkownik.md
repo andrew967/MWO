@@ -24,13 +24,13 @@ flowchart TD
     B --> C[Wybór języka]  
     C --> D[Dostosowanie interfejsu]  
     
-    %% Relacja Include (przerywana linia)
+    
     C -.->|«include»| G[Domyślny język]
     
-    %% Relacja Extend – odwrócona: "Lista popularnych języków" wskazuje na "Wyświetlenie opcji języka"
+  
     H[Lista popularnych języków] -.->|«extend»| B
 
-    %% Umożliwienie anulowania na każdym etapie - dodałem asocjację z procesem
+    
     CANCEL[Anulowanie transakcji]
     U --- CANCEL
     C --- CANCEL
@@ -47,15 +47,72 @@ flowchart TD
     D --> E[Potwierdzenie wyboru]
     E --> I[Anulowanie transakcji]
 
-    %% Relacje Include (przerywane linie)
+   
     C -.->|«include»| G[Sprawdzenie biletów]
-    %% Alternatywnie – dodajemy możliwość anulowania przez include z "Potwierdzenie wyboru"
+   
     E -.->|«include»| I
 
-    %% Relacje Extend (przerywane linie, odwrotne relacje)
+   
     H1[Podpowiedź interfejsu] -.->|«extend»| B
     H2[Podpowiedź interfejsu] -.->|«extend»| C
 
-    %% Użytkownik ma możliwość anulowania na każdym etapie – asocjacja
+    
     U --- I
 ```
+
+### SPRAWDZENIE POPRAWNOŚCI TRANSAKCJI
+```mermaid
+flowchart TD
+    U[Użytkownik]
+    
+   
+    A[Wybór biletu i płatności]
+    B[Wyświetlenie podsumowania]
+    C[Potwierdzenie lub cofnięcie]
+    D[Kontynuacja lub anulowanie]
+    
+    
+    B -.->|«include»| E[Podsumowanie transakcji]
+    A -.->|«include»| F[Anulowanie transakcji]
+    B -.->|«include»| F
+    C -.->|«include»| F
+    D -.->|«include»| F
+    
+    
+    G[Ostrzeżenie o błędzie] -.->|«extend»| A
+    G -.->|«extend»| B
+
+    
+    U --> A
+    A --> B
+    B --> C
+    C --> D
+
+  
+    U --- F
+```
+
+### Otrzymanie potwierdzenia zakupu
+```mermaid
+flowchart TD
+    U[Użytkownik]
+    S[Biletomat]
+
+    
+    S --> A[Generowanie potwierdzenia]
+    A --> B[Odebranie potwierdzenia]
+    B --> C[Komunikat o zakończeniu]
+
+
+    A -.->|«include»| GT[Generowanie biletu]
+    B -.->|«include»| CANCEL[Anulowanie transakcji]
+
+   
+    WF[Wybór formy potwierdzenia]
+    WF -.->|«extend»| A
+
+    
+    U --- CANCEL
+ ```
+
+

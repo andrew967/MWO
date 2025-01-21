@@ -37,5 +37,49 @@ flowchart TD
     B -.->|«include»| E[Aktualizacja biletów]  
 
     F[Ostrzeżenie o braku danych] -.->|«extend»| B
+```
+### Wyświetlenie podsumowania transakcji
+```mermaid
+flowchart TD
+    system[Biletomat]
+    U[Użytkownik]
+    
+    
+    A[Gromadzenie danych o transakcji]
+    C[Wyświetlenie podsumowania]
+    D[Oczekiwanie na decyzję użytkownika]
+    
+    
+    E[Podsumowanie transakcji]
+    
+  
+    F[Obsługa anulowania] -.->|«extend»| D
+    
+    
+    system --> A
+    A --> C
+    C --> D
+    U --- D 
+  
+    C -.->|«include»| E
+
+```
+## Generowanie potwierdzenia zakupu
+```mermaid
+flowchart TD
+    BT[Biletomat]
+    
+    
+    BT --> A[Odbiór potwierdzenia zakończenia transakcji]
+    A --> B[Generowanie potwierdzenia zakupu]
+    B --> C[Informacja o potwierdzeniu]
+    C --> D[Oczekiwanie na odbiór przez użytkownika]
+
+   
+    B -.->|«include»| GB[Generowanie biletu]
+    
+    
+    ERR[Błąd generowania] -.->|«extend»| B
+
 
 ```
