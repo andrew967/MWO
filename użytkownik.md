@@ -115,4 +115,27 @@ flowchart TD
     U --- CANCEL
  ```
 
+## Diagram sekwencyj
+### Wybór języka
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as Użytkownik
+    participant BT as Biletomat
 
+    
+    U->>BT: Rozpoczęcie interakcji
+    BT-->>U: Wyświetlenie opcji języka
+
+    U->>BT: Wybór języka
+    BT-->>U: Dostosowanie interfejsu do wybranego języka
+
+    BT-->>U: (Include: Domyślny język)
+
+    U->>BT: Żądanie listy popularnych języków
+    BT-->>U: (Extend: Wyświetlenie listy popularnych języków)
+
+    U->>BT: Anulowanie transakcji
+    BT-->>U: Potwierdzenie anulowania
+
+```
