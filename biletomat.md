@@ -84,8 +84,8 @@ flowchart TD
 
 ```
 
-
-## Obsługa wyboru języka
+## Diagramy sekwencyj
+### Obsługa wyboru języka
 ```mermaid
 sequenceDiagram
     participant U as Użytkownik
