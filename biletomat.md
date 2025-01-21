@@ -83,3 +83,27 @@ flowchart TD
 
 
 ```
+
+
+## Obsługa wyboru języka
+```mermaid
+sequenceDiagram
+    participant U as Użytkownik
+    participant BT as Biletomat
+
+  
+    U->>BT: Rozpoczęcie interakcji
+    BT-->>U: Wyświetlenie opcji języka
+
+    U->>BT: Wybór języka
+    BT-->>U: Dostosowanie interfejsu (zmiana języka)
+
+    BT-->>U: (Include: Domyślny język)
+
+    U->>BT: [Opcjonalnie] Prośba o: Lista popularnych języków
+    BT-->>U: (Extend: Wyświetlenie opcji alternatywnych)
+
+    U->>BT: [Opcjonalnie] Anulowanie transakcji
+    BT-->>U: Potwierdzenie anulowania
+
+```
