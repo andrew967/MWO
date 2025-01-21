@@ -115,4 +115,39 @@ flowchart TD
     U --- CANCEL
  ```
 
+## Diagramy sekwencji 
 
+### Sprawdzenie poprawności transakcji
+
+
+```mermaid
+sequenceDiagram
+    participant USER as Użytkownik
+    participant UI as Interfejs
+    participant SYSTEM as System
+    participant DB as Baza Danych
+
+    USER->>UI: Wybór biletu i metody płatności
+    UI->>SYSTEM: Przesłanie danych transakcji
+    SYSTEM->>DB: Weryfikacja danych transakcji
+    alt Dane poprawne
+        DB-->>SYSTEM: Wynik pozytywny
+        SYSTEM-->>UI: Wyświetlenie podsumowania transakcji
+        UI-->>USER: Podsumowanie transakcji
+        USER->>UI: Potwierdzenie transakcji
+        UI->>SYSTEM: Finalizacja transakcji
+        SYSTEM-->>UI: Potwierdzenie sukcesu
+        UI-->>USER: Informacja o sukcesie
+    else Dane błędne
+        DB-->>SYSTEM: Wykryto nieprawidłowe dane
+        SYSTEM-->>UI: Ostrzeżenie o błędzie
+        UI-->>USER: Informacja o błędnych danych
+    end
+    opt Anulowanie przez użytkownika
+        USER->>UI: Anulowanie transakcji
+        UI->>SYSTEM: Anulowanie procesu
+        SYSTEM-->>UI: Potwierdzenie anulowania
+        UI-->>USER: Transakcja anulowana
+    end
+
+```
