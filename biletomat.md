@@ -9,3 +9,33 @@ systemu centralnego, aby umożliwić monitoring i kontrolę operacji.
 czytnik gotówki, NFC), aby obsługiwać różnorodne transakcje.
 5. Jako biletomat, chcę wydawać resztę w gotówce, jeśli użytkownik zapłaci
 nadmiarowo, aby transakcja była zgodna z oczekiwaniami.
+
+## Diagramy przypadków użycia 
+
+### Obsługa wyboru języka
+
+```mermaid
+flowchart TD
+  U[Biletomat] --> A[Wyświetlenie opcji językowych]
+  A --> B[Rejestracja wyboru języka]  
+  B --> C[Dostosowanie interfejsu]
+  
+  A -.->|«include»| D[Opcje językowe]
+  
+  E[Powrót do języka domyślnego] -.->|«extend»| C
+```
+
+### Wyświetlenie dostępnych biletów
+
+```mermaid
+flowchart TD  
+    U[Użytkownik] --> A[Uruchomienie ekranu powitalnego]  
+    A --> B[Pobranie listy biletów]  
+    B --> C[Wyświetlenie biletów]  
+    C --> D[Oczekiwanie na wybór użytkownika]  
+
+    B -.->|«include»| E[Aktualizacja biletów]  
+
+    F[Ostrzeżenie o braku danych] -.->|«extend»| B
+
+```
