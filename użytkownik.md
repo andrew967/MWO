@@ -118,36 +118,63 @@ flowchart TD
 ## Diagramy sekwencji 
 
 ### Sprawdzenie poprawności transakcji
+#### AKTOR: Użytkownik.
+#### OBIEKTY: Interfejs użytkownika, Serwer aplikacji, Baza danych.
+#### SCENARIUSZ GŁÓWNY (POPRAWNA TRANSAKCJA):
+	•	Użytkownik wybiera bilety i metodę płatności.
+	•	Interfejs przesyła dane do serwera.
+	•	Serwer generuje podsumowanie transakcji.
+	•	Podsumowanie wyświetlane jest użytkownikowi.
+	•	Użytkownik zatwierdza wybór.
+	•	Serwer weryfikuje dane w bazie danych.
+	•	Baza zwraca informację o poprawności danych.
+	•	Serwer kontynuuje transakcję.
 
+ #### SCENARIUSZ ALTERNATYWNY 1 (BŁĘDNE DANE):
+	•	Użytkownik wybiera bilety i metodę płatności.
+	•	Interfejs przesyła dane do serwera.
+	•	Serwer generuje podsumowanie transakcji.
+	•	Podsumowanie wyświetlane jest użytkownikowi.
+	•	Użytkownik zatwierdza wybór.
+	•	Serwer weryfikuje dane w bazie danych.
+	•	Baza zwraca informację o błędzie (np. nieprawidłowe dane).
+	•	Serwer wyświetla ostrzeżenie o błędzie.
+
+
+ #### SCENARIUSZ ALTERNATYWNY 2 (ANULOWANIE TRANSAKCJI):
+	•	Użytkownik w dowolnym momencie wybiera opcję anulowania.
+	•	Interfejs przesyła informację o anulowaniu do serwera.
+	•	Serwer przerywa proces transakcji.
+	•	Użytkownik otrzymuje komunikat o anulowaniu transakcji.
 
 ```mermaid
 sequenceDiagram
     participant USER as Użytkownik
-    participant UI as Interfejs
-    participant SYSTEM as System
-    participant DB as Baza Danych
+    participant UI as Interfejs użytkownika
+    participant SERVER as Serwer aplikacji
+    participant DB as Baza danych
 
     USER->>UI: Wybór biletu i metody płatności
-    UI->>SYSTEM: Przesłanie danych transakcji
-    SYSTEM->>DB: Weryfikacja danych transakcji
+    UI->>SERVER: Przesłanie danych o wyborze
+    SERVER->>UI: Generowanie podsumowania transakcji
+    UI->>USER: Wyświetlenie podsumowania
+    USER->>UI: Potwierdzenie wyboru
+    UI->>SERVER: Przesłanie potwierdzenia
+    SERVER->>DB: Weryfikacja danych
     alt Dane poprawne
-        DB-->>SYSTEM: Wynik pozytywny
-        SYSTEM-->>UI: Wyświetlenie podsumowania transakcji
-        UI-->>USER: Podsumowanie transakcji
-        USER->>UI: Potwierdzenie transakcji
-        UI->>SYSTEM: Finalizacja transakcji
-        SYSTEM-->>UI: Potwierdzenie sukcesu
-        UI-->>USER: Informacja o sukcesie
+        DB-->>SERVER: Dane poprawne
+        SERVER->>UI: Kontynuacja procesu transakcji
+        UI->>USER: Potwierdzenie zakończenia transakcji
     else Dane błędne
-        DB-->>SYSTEM: Wykryto nieprawidłowe dane
-        SYSTEM-->>UI: Ostrzeżenie o błędzie
-        UI-->>USER: Informacja o błędnych danych
+        DB-->>SERVER: Dane niepoprawne
+        SERVER->>UI: Ostrzeżenie o błędnych danych
+        UI->>USER: Komunikat o błędzie
     end
-    opt Anulowanie przez użytkownika
+    opt Anulowanie transakcji
         USER->>UI: Anulowanie transakcji
-        UI->>SYSTEM: Anulowanie procesu
-        SYSTEM-->>UI: Potwierdzenie anulowania
-        UI-->>USER: Transakcja anulowana
+        UI->>SERVER: Informacja o anulowaniu
+        SERVER->>UI: Potwierdzenie anulowania
+        UI->>USER: Komunikat o anulowaniu
     end
 
 ```
