@@ -88,6 +88,20 @@ flowchart TD
 
 ## Wyświetlanie instrukcji
 
+### AKTOR: Biletomat.
+### OBIEKTY: Użytkownik.
+### SCENARUISZ GŁOWNY:
+	•	Biletomat wyświetla krokowe instrukcje użytkownikowi na ekranie.
+	•	Biletomat monitoruje aktywność użytkownika.
+### SCENARIUSZ ALTERNATYWNY 1 (Brak aktywności lub błąd):
+	•	Biletomat wykrywa brak aktywności użytkownika.
+	•	Wyświetla komunikat pomocniczy, informujący o konieczności podjęcia działań.
+	•	Jeśli problem się utrzymuje, biletomat oferuje szczegółową pomoc w formie dodatkowych instrukcji.
+
+### SCENARIUSZ ALTERNATYWNY 2 (Anulowanie transakcji):
+	•	Użytkownik wybiera opcję anulowania transakcji.
+	•	Biletomat wyświetla potwierdzenie anulowania i kończy operację.
+
 ```mermaid
 sequenceDiagram
     participant USER as Użytkownik
