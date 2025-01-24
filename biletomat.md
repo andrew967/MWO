@@ -64,7 +64,7 @@ flowchart TD
     C -.->|«include»| E
 
 ```
-## Generowanie potwierdzenia zakupu
+### Generowanie potwierdzenia zakupu
 ```mermaid
 flowchart TD
     BT[Biletomat]
@@ -83,6 +83,7 @@ flowchart TD
 
 
 ```
+
 
 ## Diagramy sekwencyj
 ### Obsługa wyboru języka
@@ -147,4 +148,50 @@ sequenceDiagram
     U->>BT: Anulowanie transakcji
     BT->>U: Potwierdzenie anulowania
 ```
+
+### Wyświetlanie instrukcji
+
+#### AKTOR: Biletomat.
+#### OBIEKTY: Użytkownik.
+#### SCENARUISZ GŁOWNY:
+	•	Biletomat wyświetla krokowe instrukcje użytkownikowi na ekranie.
+	•	Biletomat monitoruje aktywność użytkownika.
+#### SCENARIUSZ ALTERNATYWNY 1 (Brak aktywności lub błąd):
+	•	Biletomat wykrywa brak aktywności użytkownika.
+	•	Wyświetla komunikat pomocniczy, informujący o konieczności podjęcia działań.
+	•	Jeśli problem się utrzymuje, biletomat oferuje szczegółową pomoc w formie dodatkowych instrukcji.
+
+#### SCENARIUSZ ALTERNATYWNY 2 (Anulowanie transakcji):
+	•	Użytkownik wybiera opcję anulowania transakcji.
+	•	Biletomat wyświetla potwierdzenie anulowania i kończy operację.
+
+```mermaid
+sequenceDiagram
+    participant USER as Użytkownik
+    participant MACHINE as Biletomat
+
+    MACHINE->>USER: Wyświetlenie krokowych instrukcji
+    loop Monitorowanie aktywności
+        MACHINE->>MACHINE: Analiza aktywności użytkownika
+        alt Użytkownik aktywny
+            MACHINE->>USER: Aktualizacja instrukcji
+        else Brak aktywności lub błąd
+            MACHINE->>USER: Wyświetlenie komunikatu pomocniczego
+            opt Szczegółowa pomoc
+                MACHINE->>USER: Wyświetlenie szczegółowych instrukcji
+            end
+        end
+    end
+    opt Anulowanie przez użytkownika
+        USER->>MACHINE: Anulowanie transakcji
+        MACHINE->>USER: Komunikat o anulowaniu
+    end
+
+```
+
+
+
+
+
+
 

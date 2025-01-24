@@ -115,6 +115,7 @@ flowchart TD
     U --- CANCEL
  ```
 
+
 ## Diagram sekwencyj
 ### Wybór języka
 
@@ -185,4 +186,73 @@ sequenceDiagram
     %% Użytkownik ma możliwość anulowania procesu w dowolnym momencie
     U->>BT: Anulowanie transakcji
     BT-->>U: Potwierdzenie anulowania
+
 ```
+
+## Diagramy sekwencji 
+
+### Sprawdzenie poprawności transakcji
+#### AKTOR: Użytkownik.
+#### OBIEKTY: Interfejs użytkownika, Serwer aplikacji, Baza danych.
+#### SCENARIUSZ GŁÓWNY (POPRAWNA TRANSAKCJA):
+	•	Użytkownik wybiera bilety i metodę płatności.
+	•	Interfejs przesyła dane do serwera.
+	•	Serwer generuje podsumowanie transakcji.
+	•	Podsumowanie wyświetlane jest użytkownikowi.
+	•	Użytkownik zatwierdza wybór.
+	•	Serwer weryfikuje dane w bazie danych.
+	•	Baza zwraca informację o poprawności danych.
+	•	Serwer kontynuuje transakcję.
+
+ #### SCENARIUSZ ALTERNATYWNY 1 (BŁĘDNE DANE):
+	•	Użytkownik wybiera bilety i metodę płatności.
+	•	Interfejs przesyła dane do serwera.
+	•	Serwer generuje podsumowanie transakcji.
+	•	Podsumowanie wyświetlane jest użytkownikowi.
+	•	Użytkownik zatwierdza wybór.
+	•	Serwer weryfikuje dane w bazie danych.
+	•	Baza zwraca informację o błędzie (np. nieprawidłowe dane).
+	•	Serwer wyświetla ostrzeżenie o błędzie.
+
+
+ #### SCENARIUSZ ALTERNATYWNY 2 (ANULOWANIE TRANSAKCJI):
+	•	Użytkownik w dowolnym momencie wybiera opcję anulowania.
+	•	Interfejs przesyła informację o anulowaniu do serwera.
+	•	Serwer przerywa proces transakcji.
+	•	Użytkownik otrzymuje komunikat o anulowaniu transakcji.
+
+```mermaid
+sequenceDiagram
+    participant USER as Użytkownik
+    participant UI as Interfejs użytkownika
+    participant SERVER as Serwer aplikacji
+    participant DB as Baza danych
+
+    USER->>UI: Wybór biletu i metody płatności
+    UI->>SERVER: Przesłanie danych o wyborze
+    SERVER->>UI: Generowanie podsumowania transakcji
+    UI->>USER: Wyświetlenie podsumowania
+    USER->>UI: Potwierdzenie wyboru
+    UI->>SERVER: Przesłanie potwierdzenia
+    SERVER->>DB: Weryfikacja danych
+    alt Dane poprawne
+        DB-->>SERVER: Dane poprawne
+        SERVER->>UI: Kontynuacja procesu transakcji
+        UI->>USER: Potwierdzenie zakończenia transakcji
+    else Dane błędne
+        DB-->>SERVER: Dane niepoprawne
+        SERVER->>UI: Ostrzeżenie o błędnych danych
+        UI->>USER: Komunikat o błędzie
+    end
+    opt Anulowanie transakcji
+        USER->>UI: Anulowanie transakcji
+        UI->>SERVER: Informacja o anulowaniu
+        SERVER->>UI: Potwierdzenie anulowania
+        UI->>USER: Komunikat o anulowaniu
+    end
+```
+
+
+
+
+
