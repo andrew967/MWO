@@ -83,3 +83,36 @@ flowchart TD
 
 
 ```
+
+# Diagramy sekwencji 
+
+## Wyświetlanie instrukcji
+
+```mermaid
+sequenceDiagram
+    participant USER as Użytkownik
+    participant MACHINE as Biletomat
+
+    MACHINE->>USER: Wyświetlenie krokowych instrukcji
+    loop Monitorowanie aktywności
+        MACHINE->>MACHINE: Analiza aktywności użytkownika
+        alt Użytkownik aktywny
+            MACHINE->>USER: Aktualizacja instrukcji
+        else Brak aktywności lub błąd
+            MACHINE->>USER: Wyświetlenie komunikatu pomocniczego
+            opt Szczegółowa pomoc
+                MACHINE->>USER: Wyświetlenie szczegółowych instrukcji
+            end
+        end
+    end
+    opt Anulowanie przez użytkownika
+        USER->>MACHINE: Anulowanie transakcji
+        MACHINE->>USER: Komunikat o anulowaniu
+    end
+
+```
+
+
+
+
+
