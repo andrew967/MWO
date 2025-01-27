@@ -83,8 +83,41 @@ flowchart TD
 
 
 ```
+### Realizacja płatności
+```mermaid
+flowchart TD
+    BT[Biletomat]
+    
+    %% Główny przepływ
+    BT --> A[Inicjowanie płatności]
+    A --> B[Przesłanie danych transakcji]
+    B --> C[Oczekiwanie na odpowiedź systemu transakcyjnego]
+    C --> D[Potwierdzenie płatności]
 
+    %% Relacje Include
+    A -.->|«include»| ERRP[Błędy płatności]
+    B -.->|«include»| CANCEL[Anulowanie transakcji przez użytkownika]
+    
+    %% Relacja Extend – od "Obsługa alternatywnych metod płatności" do "Oczekiwanie na odpowiedź"
+    ALT[Obsługa alternatyw] -.->|«extend»| C
+```
+### Wyświetlanie instrukcji
+```mermaid
+flowchart TD
+    BT[Biletomat]
+    
+    %% Główny przepływ
+    BT --> A[Wyświetlenie krokowych instrukcji]
+    A --> B[Dostosowanie instrukcji w czasie rzeczywistym]
+    B --> C[Wyświetlenie komunikatów pomocniczych]
 
+    %% Relacje Include
+    A -.->|«include»| BASIC[Podstawowe instrukcje]
+    C -.->|«include»| CANCEL[Anulowanie transakcji przez użytkownika]
+
+    %% Relacja Extend – od "Wyświetlenie szczegółowej pomocy (opcjonalnie)" do "Wyświetlenie komunikatów pomocniczych"
+    EXT[Szczegółowa pomoc] -.->|«extend»| C
+```
 ## Diagramy sekwencyj
 ### Obsługa wyboru języka
 #### Scenariusz Główny (Podstawowy)
