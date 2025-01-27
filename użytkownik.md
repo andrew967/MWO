@@ -114,7 +114,6 @@ flowchart TD
     
     U --- CANCEL
  ```
-
 ### Płatność za bilet
 ```mermaid
 flowchart TD
@@ -204,10 +203,13 @@ Kroki:
     - Biletomat potwierdza anulowanie, informując użytkownika o przerwaniu procesu wyboru języka.
     - Proces zostaje przerwany, a ekran może powrócić do ekranu powitalnego lub zostaje wyłączony tryb interakcji.
 
-       
+        
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as Użytkownik
+    participant BT as Biletomat
 
-    %% Rozpoczęcie procesu po dokonanym zakupie
-    note over BT: include: Generowanie biletu
     %% Użytkownik inicjuje interakcję – wybór języka
     U->>BT: Rozpoczęcie interakcji
     BT-->>U: Wyświetlenie opcji języka
@@ -292,53 +294,8 @@ sequenceDiagram
     end
 ```
 
-### Otrzymanie potwierdzenia zakupu
 
-#### AKTOR: Użytkownik
-#### OBIEKTY: Biletomat
-#### Scenariusz Główny (Podstawowy):
-- Generowanie potwierdzenia
-    - Po zakończeniu transakcji Biletomat przygotowuje potwierdzenie w formie biletu lub kodu elektronicznego.
-    - Jest to operacja include: Generowanie biletu.
-- (Extend) Wybór formy potwierdzenia:
-    - Jeśli system przewiduje wybór między formą drukowaną a elektroniczną, Biletomat wyświetla odpowiednie opcje i czeka na decyzję użytkownika.
-    - Zgodnie z relacją extend, uruchamiana jest procedura umożliwiająca wybór formy dostarczenia potwierdzenia (np. druk czy e-mail).
 
-- Odebranie potwierdzenia:
-    - Użytkownik odbiera wydruk biletu lub otrzymuje kod elektroniczny.
-    - Biletomat sygnalizuje (np. komunikatem na ekranie), że potwierdzenie jest gotowe do odbioru bądź zostało wysłane.
 
-- Komunikat o zakończeniu:
-    - Po odbiorze potwierdzenia system wyświetla informację o pomyślnym zakończeniu transakcji.
-    - Proces zostaje zakończony, a Biletomat może powrócić do ekranu głównego.
-#### Scenariusz Alternatywny – Anulowanie transakcji (Include):
-- Anulowanie transakcji
-    - W dowolnym momencie, zanim dojdzie do finalizacji, użytkownik może zdecydować się przerwać operację.
-    - Zgodnie z relacją include: Anulowanie transakcji, Biletomat wyświetla komunikat potwierdzający anulowanie, a proces zostaje zakończony.
-    - W takiej sytuacji potwierdzenie nie jest generowane bądź zostaje unieważnione, a Biletomat powraca do ekranu powitalnego lub kończy bieżącą sesję.
-```mermaid
-sequenceDiagram
-    autonumber
-    participant U as Użytkownik
-    participant BT as Biletomat
-    BT->>U: Informacja o generowaniu potwierdzenia
 
-    alt (Extend) Wybór formy potwierdzenia
-        BT->>U: Zapytanie o formę potwierdzenia (druk/elektroniczny)
-        U->>BT: Wybór formy
-        BT->>U: Potwierdzenie wybranej formy
-    end
-
-    %% Odebranie potwierdzenia
-    BT-->>U: Gotowe potwierdzenie zakupu (druk / elektroniczne)
-    BT->>U: Komunikat o zakończeniu procesu
-
-    %% Scenariusz Alternatywny - Anulowanie transakcji
-    opt include: Anulowanie transakcji
-        U->>BT: Decyzja o przerwaniu (anulowanie)
-        BT->>U: Komunikat o anulowaniu
-        note over U,BT: Proces zostaje zakończony
-    end
-
-```
 
