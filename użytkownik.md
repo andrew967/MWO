@@ -317,6 +317,7 @@ sequenceDiagram
     - Zgodnie z relacją include: Anulowanie transakcji, Biletomat wyświetla komunikat potwierdzający anulowanie, a proces zostaje zakończony.
     - W takiej sytuacji potwierdzenie nie jest generowane bądź zostaje unieważnione, a Biletomat powraca do ekranu powitalnego lub kończy bieżącą sesję.
 ```mermaid
+
 sequenceDiagram
     autonumber
     participant U as Użytkownik
