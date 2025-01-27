@@ -114,7 +114,6 @@ flowchart TD
     
     U --- CANCEL
  ```
-
 ### Płatność za bilet
 ```mermaid
 flowchart TD
@@ -345,6 +344,5 @@ sequenceDiagram
         UI->>USER: Komunikat o anulowaniu
     end
 ```
-
 
 
