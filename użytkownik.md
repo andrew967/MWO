@@ -204,10 +204,13 @@ Kroki:
     - Biletomat potwierdza anulowanie, informując użytkownika o przerwaniu procesu wyboru języka.
     - Proces zostaje przerwany, a ekran może powrócić do ekranu powitalnego lub zostaje wyłączony tryb interakcji.
 
-       
+        
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as Użytkownik
+    participant BT as Biletomat
 
-    %% Rozpoczęcie procesu po dokonanym zakupie
-    note over BT: include: Generowanie biletu
     %% Użytkownik inicjuje interakcję – wybór języka
     U->>BT: Rozpoczęcie interakcji
     BT-->>U: Wyświetlenie opcji języka
@@ -226,8 +229,8 @@ Kroki:
     %% Użytkownik ma możliwość anulowania procesu w dowolnym momencie
     U->>BT: Anulowanie transakcji
     BT-->>U: Potwierdzenie anulowania
-
 ```
+
 
 ## Diagramy sekwencji 
 
