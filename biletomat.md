@@ -223,7 +223,49 @@ sequenceDiagram
 ```
 
 
+### Wyświetlenie dostępnych biletów
 
+#### AKTOR: Użytkownik
+#### OBIEKTY: Biletomat, System Centralny
+#### Kolejność komunikatów (Scenariusz Główny):
+	- Biletomat uruchamia ekran powitalny (Uruchomienie ekranu powitalnego).
+	- Biletomat pobiera listę dostępnych biletów z systemu centralnego (include: Aktualizacja biletów).
+	- Biletomat wyświetla kategorię biletów i ich szczegóły (Wyświetlenie biletów).
+	- Biletomat czeka na wybór użytkownika (Oczekiwanie na wybór użytkownika).
+#### Scenariusz Alternatywny (Ostrzeżenie o braku danych):
+	- Podczas próby pobrania listy dostępnych biletów (krok 2 scenariusza głównego) występuje błąd (np. awaria sieci).
+	- Zgodnie z relacją extend, Biletomat wyświetla ostrzeżenie o braku aktualnych danych.
+	- Użytkownik może spróbować ponownie lub zrezygnować z zakupu, co powoduje powrót do ekranu powitalnego lub zakończenie sesji.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as Użytkownik
+    participant BT as Biletomat
+    participant SC as System Centralny
+
+    %% Krok 1: Uruchomienie ekranu powitalnego
+    BT->>U: Ekran powitalny (start)
+
+    %% Krok 2: Pobranie listy dostępnych biletów (include: Aktualizacja biletów)
+    BT->>SC: Żądanie listy dostępnych biletów
+    alt Dostęp do systemu centralnego OK
+        SC-->>BT: Lista dostępnych biletów
+    else Awaria sieci (extend: Ostrzeżenie o braku danych)
+        BT->>U: Komunikat o braku aktualnych danych
+        note right of BT: Użytkownik może ponowić próbę <br/> lub zakończyć sesję
+    end
+
+    %% Krok 3: Wyświetlenie biletów
+    BT->>U: Wyświetlenie kategorii i szczegółów biletów
+
+    %% Krok 4: Oczekiwanie na wybór użytkownika
+    U->>BT: Wybór biletu lub rezygnacja
+
+    %% Zakończenie
+    BT->>U: Przejście do dalszej części zakupu <br/> lub powrót do ekranu głównego
+
+```
 
 
 
