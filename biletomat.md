@@ -64,7 +64,7 @@ flowchart TD
     C -.->|«include»| E
 
 ```
-## Generowanie potwierdzenia zakupu
+### Generowanie potwierdzenia zakupu
 ```mermaid
 flowchart TD
     BT[Biletomat]
@@ -84,7 +84,144 @@ flowchart TD
 
 ```
 
+### Realizacja płatności
+```mermaid
+flowchart TD
+    BT[Biletomat]
+    
+    %% Główny przepływ
+    BT --> A[Inicjowanie płatności]
+    A --> B[Przesłanie danych transakcji]
+    B --> C[Oczekiwanie na odpowiedź systemu transakcyjnego]
+    C --> D[Potwierdzenie płatności]
 
+    %% Relacje Include
+    A -.->|«include»| ERRP[Błędy płatności]
+    B -.->|«include»| CANCEL[Anulowanie transakcji przez użytkownika]
+    
+    %% Relacja Extend – od "Obsługa alternatywnych metod płatności" do "Oczekiwanie na odpowiedź"
+    ALT[Obsługa alternatyw] -.->|«extend»| C
+```
+### Wyświetlanie instrukcji
+```mermaid
+flowchart TD
+    BT[Biletomat]
+    
+    %% Główny przepływ
+    BT --> A[Wyświetlenie krokowych instrukcji]
+    A --> B[Dostosowanie instrukcji w czasie rzeczywistym]
+    B --> C[Wyświetlenie komunikatów pomocniczych]
+
+    %% Relacje Include
+    A -.->|«include»| BASIC[Podstawowe instrukcje]
+    C -.->|«include»| CANCEL[Anulowanie transakcji przez użytkownika]
+
+    %% Relacja Extend – od "Wyświetlenie szczegółowej pomocy (opcjonalnie)" do "Wyświetlenie komunikatów pomocniczych"
+    EXT[Szczegółowa pomoc] -.->|«extend»| C
+```
+## Diagramy sekwencyj
+### Obsługa wyboru języka
+#### Scenariusz Główny (Podstawowy)
+
+Cel: Biletomat wyświetla dostępne opcje językowe, odbiera wybór użytkownika i dostosowuje interfejs do wybranego języka.
+
+Kroki:
+
+- Wyświetlenie opcji języka:
+    - Biletomat po uruchomieniu interakcji automatycznie prezentuje użytkownikowi ekran z dostępnymi opcjami językowymi.
+    - Ekran zawiera listę dostępnych języków, a także opcję ustawienia języka domyślnego (operacja include).
+
+- Odbiór wyboru języka:
+    - Biletomat oczekuje na wybór użytkownika.
+    - Po otrzymaniu wyboru, system przetwarza tę informację i automatycznie dostosowuje interfejs do wybranego języka.
+
+- Dostosowanie interfejsu:
+    - Po ustaleniu wyboru, Biletomat wykonuje procedurę zmiany interfejsu użytkownika.
+    - Jeżeli użytkownik nie dokonał aktywnego wyboru, system może automatycznie ustawić język domyślny (include).
+
+- Zakończenie podstawowego przepływu:
+    - Interfejs zostaje dostosowany do wybranego (lub domyślnego) języka, a użytkownik kontynuuje dalsze interakcje.
+
+#### Scenariusz Alternatywny
+
+Cel: Umożliwić użytkownikowi uzyskanie dodatkowej listy popularnych języków oraz umożliwić anulowanie procesu wyboru języka.
+
+Kroki:
+
+- Rozszerzenie opcji wyboru języka:
+    - Po wysłaniu przez Biletomat standardowej listy opcji językowych (krok 1 scenariusza głównego), użytkownik wysyła dodatkowe żądanie o wyświetlenie listy popularnych języków.
+    - Biletomat, zgodnie z relacją extend, wykonuje operację wyświetlenia rozszerzonej listy popularnych języków.
+    - Użytkownik przegląda rozszerzoną listę i dokonuje wyboru jednego z dostępnych języków, co skutkuje powrotem do głównego przepływu (krok 2 i 3 scenariusza głównego).
+
+- Anulowanie procesu:
+    - W dowolnym momencie interakcji (zarówno w głównym przepływie, jak i w alternatywnym scenariuszu) użytkownik może zdecydować o anulowaniu transakcji.
+    - Po otrzymaniu sygnału anulowania, Biletomat przerywa proces wyboru języka i wysyła potwierdzenie anulowania.
+    - Proces zostaje zakończony – system może powrócić do ekranu powitalnego lub zakończyć bieżącą sesję interakcji.
+    
+```mermaid
+sequenceDiagram
+    autonumber
+    participant BT as Biletomat
+    participant U as Użytkownik
+
+    %% Biletomat rozpoczyna – wyświetla opcje językowe
+    BT->>U: Wyświetlenie opcji języka
+
+    %% Oczekiwanie na wybór dokonywany przez użytkownika
+    U->>BT: Wybór języka
+    BT->>U: Dostosowanie interfejsu do wybranego języka
+
+    %% (Include) W przypadku, gdy nie określono wyboru, domyślny język może być ustawiony
+    BT->>U: (Include: Ustawienie domyślnego języka)
+
+    %% Scenariusz rozszerzający – użytkownik żąda alternatywnych opcji
+    U->>BT: Żądanie listy popularnych języków
+    BT->>U: (Extend: Wyświetlenie listy popularnych języków)
+
+    %% Możliwość anulowania procesu przez użytkownika
+    U->>BT: Anulowanie transakcji
+    BT->>U: Potwierdzenie anulowania
+```
+
+### Wyświetlanie instrukcji
+
+#### AKTOR: Biletomat.
+#### OBIEKTY: Użytkownik.
+#### SCENARUISZ GŁOWNY:
+	•	Biletomat wyświetla krokowe instrukcje użytkownikowi na ekranie.
+	•	Biletomat monitoruje aktywność użytkownika.
+#### SCENARIUSZ ALTERNATYWNY 1 (Brak aktywności lub błąd):
+	•	Biletomat wykrywa brak aktywności użytkownika.
+	•	Wyświetla komunikat pomocniczy, informujący o konieczności podjęcia działań.
+	•	Jeśli problem się utrzymuje, biletomat oferuje szczegółową pomoc w formie dodatkowych instrukcji.
+
+#### SCENARIUSZ ALTERNATYWNY 2 (Anulowanie transakcji):
+	•	Użytkownik wybiera opcję anulowania transakcji.
+	•	Biletomat wyświetla potwierdzenie anulowania i kończy operację.
+
+```mermaid
+sequenceDiagram
+    participant USER as Użytkownik
+    participant MACHINE as Biletomat
+
+    MACHINE->>USER: Wyświetlenie krokowych instrukcji
+    loop Monitorowanie aktywności
+        MACHINE->>MACHINE: Analiza aktywności użytkownika
+        alt Użytkownik aktywny
+            MACHINE->>USER: Aktualizacja instrukcji
+        else Brak aktywności lub błąd
+            MACHINE->>USER: Wyświetlenie komunikatu pomocniczego
+            opt Szczegółowa pomoc
+                MACHINE->>USER: Wyświetlenie szczegółowych instrukcji
+            end
+        end
+    end
+    opt Anulowanie przez użytkownika
+        USER->>MACHINE: Anulowanie transakcji
+        MACHINE->>USER: Komunikat o anulowaniu
+    end
+
+```
 ### WYŚWIETLENIA DOSTĘPNYCH BILETÓW
 
 #### AKTOR: Biletomat.
@@ -128,6 +265,8 @@ sequenceDiagram
     BT->>U: Przejście do dalszej części zakupu <br/> lub powrót do ekranu głównego
 
 ```
+
+
 
 
 

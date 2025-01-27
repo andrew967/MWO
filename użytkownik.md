@@ -114,6 +114,184 @@ flowchart TD
     
     U --- CANCEL
  ```
+
+### Płatność za bilet
+```mermaid
+flowchart TD
+    U[Użytkownik]
+    S[Biletomat]
+
+    %% Główny przepływ
+    U --> MP[Wybór metody płatności]
+    MP --> VP[Weryfikacja metody płatności]
+    VP --> RP[Realizacja płatności]
+    RP --> PT[Potwierdzenie transakcji]
+
+    %% Relacje Include
+    MP -.->|«include»| VP2[Weryfikacja płatności]
+    RP -.->|«include»| CANCEL[Anulowanie transakcji]
+
+    %% Relacja Extend
+    %% "Obsługa błędów płatności" rozszerza przypadki związane z wyborem płatności
+    ERR[Obsługa błędów płatności]
+    ERR -.->|«extend»| MP
+    ERR -.->|«extend»| RP
+
+    %% Użytkownik może anulować proces w dowolnym momencie
+    U --- CANCEL
+```
+### Otrzymanie instrukcji na ekranie
+```mermaid
+flowchart TD
+    U[Użytkownik]
+    S[Biletomat]
+    %% Główny przepływ
+    U --> RI[Rozpoczęcie interakcji]
+    RI --> WI[Wyświetlenie instrukcji]
+    WI --> PI[Postępowanie według instrukcji]
+    PI --> HELP[Wyświetlenie pomocy]
+
+    %% Relacje Include
+    PI -.->|«include»| CANCEL[Anulowanie transakcji]
+
+    %% Asocjacja anulowania – użytkownik może przerwać proces w dowolnym momencie
+    U --- CANCEL
+```
+
+
+## Diagram sekwencyj
+### Wybór języka
+
+#### Scenariusz Główny
+
+Cel: Użytkownik dokonuje wyboru języka, a system (Biletomat) dostosowuje interfejs do wybranej opcji.
+
+Kroki:
+
+- Rozpoczęcie interakcji:
+    - Użytkownik zbliża się do biletomatu i inicjuje interakcję, np. naciskając przycisk „Start” lub dotykając ekranu.
+    - Biletomat reaguje, wyświetlając główny ekran z opcjami – w tym także wyświetleniem dostępnych języków.
+
+- Wyświetlenie opcji języka:
+    - Biletomat prezentuje listę opcji językowych na ekranie.
+    - W tle system może ustawić domyślny język (casus include), jeżeli użytkownik nie wyrazi innej preferencji.
+
+- Wybór języka przez użytkownika:
+    - Użytkownik wybiera preferowany język, dotykając odpowiedniej ikony lub nazwy języka.
+    - Biletomat przetwarza wybór i dostosowuje interfejs do wybranego języka.
+    - System może wykonać operację include „Domyślny język”, jeśli nie zostanie wybrana inna opcja (np. przy braku aktywności przez określony czas).
+
+- Potwierdzenie dostosowania interfejsu:
+    - Biletomat wyświetla komunikat potwierdzający, że interfejs został przestawiony na wybrany język.
+
+- Koniec interakcji:
+    - Proces wyboru języka zostaje zakończony, a użytkownik kontynuuje dalsze działania (np. wybór biletu).
+
+#### Scenariusz Alternatywny
+
+Cel: Użytkownik może skorzystać z dodatkowego scenariusza rozszerzonego, aby poznać listę popularnych języków, lub anulować cały proces wyboru języka.
+
+Kroki:
+- Alternatywa – Rozszerzenie opcji językowych:
+    - Po wyświetleniu opcji języka (krok 2 scenariusza głównego), użytkownik decyduje się na uzyskanie dodatkowych informacji o popularnych językach.
+    - Użytkownik wysyła żądanie (np. naciska przycisk lub wybiera opcję "Inne opcje" bądź "Popularne języki").
+    - Biletomat reaguje, wyświetlając rozszerzony widok – listę popularnych języków. To rozszerzenie wynika z relacji extend („Lista popularnych języków”).
+    - Użytkownik może wybrać jeden z języków z rozszerzonej listy. Po wyborze system przechodzi do kroku 3 scenariusza głównego, czyli realizuje wybór oraz dostosowuje interfejs.
+
+- Alternatywa – Anulowanie wyboru języka:
+    - W dowolnym momencie trwania interakcji (zarówno podczas głównego wyboru, jak i przy rozszerzonej liście) użytkownik decyduje się anulować proces.
+    - Użytkownik wysyła sygnał anulowania (np. naciskając przycisk "Anuluj").
+    - Biletomat potwierdza anulowanie, informując użytkownika o przerwaniu procesu wyboru języka.
+    - Proces zostaje przerwany, a ekran może powrócić do ekranu powitalnego lub zostaje wyłączony tryb interakcji.
+
+       
+
+    %% Rozpoczęcie procesu po dokonanym zakupie
+    note over BT: include: Generowanie biletu
+    %% Użytkownik inicjuje interakcję – wybór języka
+    U->>BT: Rozpoczęcie interakcji
+    BT-->>U: Wyświetlenie opcji języka
+
+    %% Użytkownik dokonuje wyboru języka
+    U->>BT: Wybór języka
+    BT-->>U: Dostosowanie interfejsu do wybranego języka
+
+    %% Relacja include: ustawienie domyślnego języka, jeżeli nie wybrano innej opcji
+    BT-->>U: (Include: Domyślny język)
+
+    %% Relacja extend: użytkownik może poprosić o alternatywne opcje
+    U->>BT: Żądanie listy popularnych języków
+    BT-->>U: (Extend: Wyświetlenie listy popularnych języków)
+
+    %% Użytkownik ma możliwość anulowania procesu w dowolnym momencie
+    U->>BT: Anulowanie transakcji
+    BT-->>U: Potwierdzenie anulowania
+
+```
+
+## Diagramy sekwencji 
+
+### Sprawdzenie poprawności transakcji
+#### AKTOR: Użytkownik.
+#### OBIEKTY: Interfejs użytkownika, Serwer aplikacji, Baza danych.
+#### SCENARIUSZ GŁÓWNY (POPRAWNA TRANSAKCJA):
+	•	Użytkownik wybiera bilety i metodę płatności.
+	•	Interfejs przesyła dane do serwera.
+	•	Serwer generuje podsumowanie transakcji.
+	•	Podsumowanie wyświetlane jest użytkownikowi.
+	•	Użytkownik zatwierdza wybór.
+	•	Serwer weryfikuje dane w bazie danych.
+	•	Baza zwraca informację o poprawności danych.
+	•	Serwer kontynuuje transakcję.
+
+ #### SCENARIUSZ ALTERNATYWNY 1 (BŁĘDNE DANE):
+	•	Użytkownik wybiera bilety i metodę płatności.
+	•	Interfejs przesyła dane do serwera.
+	•	Serwer generuje podsumowanie transakcji.
+	•	Podsumowanie wyświetlane jest użytkownikowi.
+	•	Użytkownik zatwierdza wybór.
+	•	Serwer weryfikuje dane w bazie danych.
+	•	Baza zwraca informację o błędzie (np. nieprawidłowe dane).
+	•	Serwer wyświetla ostrzeżenie o błędzie.
+
+
+ #### SCENARIUSZ ALTERNATYWNY 2 (ANULOWANIE TRANSAKCJI):
+	•	Użytkownik w dowolnym momencie wybiera opcję anulowania.
+	•	Interfejs przesyła informację o anulowaniu do serwera.
+	•	Serwer przerywa proces transakcji.
+	•	Użytkownik otrzymuje komunikat o anulowaniu transakcji.
+
+```mermaid
+sequenceDiagram
+    participant USER as Użytkownik
+    participant UI as Interfejs użytkownika
+    participant SERVER as Serwer aplikacji
+    participant DB as Baza danych
+
+    USER->>UI: Wybór biletu i metody płatności
+    UI->>SERVER: Przesłanie danych o wyborze
+    SERVER->>UI: Generowanie podsumowania transakcji
+    UI->>USER: Wyświetlenie podsumowania
+    USER->>UI: Potwierdzenie wyboru
+    UI->>SERVER: Przesłanie potwierdzenia
+    SERVER->>DB: Weryfikacja danych
+    alt Dane poprawne
+        DB-->>SERVER: Dane poprawne
+        SERVER->>UI: Kontynuacja procesu transakcji
+        UI->>USER: Potwierdzenie zakończenia transakcji
+    else Dane błędne
+        DB-->>SERVER: Dane niepoprawne
+        SERVER->>UI: Ostrzeżenie o błędnych danych
+        UI->>USER: Komunikat o błędzie
+    end
+    opt Anulowanie transakcji
+        USER->>UI: Anulowanie transakcji
+        UI->>SERVER: Informacja o anulowaniu
+        SERVER->>UI: Potwierdzenie anulowania
+        UI->>USER: Komunikat o anulowaniu
+    end
+```
+
 ### Otrzymanie potwierdzenia zakupu
 
 #### AKTOR: Użytkownik
@@ -138,16 +316,11 @@ flowchart TD
     - W dowolnym momencie, zanim dojdzie do finalizacji, użytkownik może zdecydować się przerwać operację.
     - Zgodnie z relacją include: Anulowanie transakcji, Biletomat wyświetla komunikat potwierdzający anulowanie, a proces zostaje zakończony.
     - W takiej sytuacji potwierdzenie nie jest generowane bądź zostaje unieważnione, a Biletomat powraca do ekranu powitalnego lub kończy bieżącą sesję.
-
 ```mermaid
 sequenceDiagram
     autonumber
     participant U as Użytkownik
     participant BT as Biletomat
-
-    %% Rozpoczęcie procesu po dokonanym zakupie
-    note over BT: include: Generowanie biletu
-
     BT->>U: Informacja o generowaniu potwierdzenia
 
     alt (Extend) Wybór formy potwierdzenia
