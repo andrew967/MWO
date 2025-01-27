@@ -114,6 +114,48 @@ flowchart TD
     
     U --- CANCEL
  ```
+### Płatność za bilet
+```mermaid
+flowchart TD
+    U[Użytkownik]
+    S[Biletomat]
+
+    %% Główny przepływ
+    U --> MP[Wybór metody płatności]
+    MP --> VP[Weryfikacja metody płatności]
+    VP --> RP[Realizacja płatności]
+    RP --> PT[Potwierdzenie transakcji]
+
+    %% Relacje Include
+    MP -.->|«include»| VP2[Weryfikacja płatności]
+    RP -.->|«include»| CANCEL[Anulowanie transakcji]
+
+    %% Relacja Extend
+    %% "Obsługa błędów płatności" rozszerza przypadki związane z wyborem płatności
+    ERR[Obsługa błędów płatności]
+    ERR -.->|«extend»| MP
+    ERR -.->|«extend»| RP
+
+    %% Użytkownik może anulować proces w dowolnym momencie
+    U --- CANCEL
+```
+### Otrzymanie instrukcji na ekranie
+```mermaid
+flowchart TD
+    U[Użytkownik]
+    S[Biletomat]
+    %% Główny przepływ
+    U --> RI[Rozpoczęcie interakcji]
+    RI --> WI[Wyświetlenie instrukcji]
+    WI --> PI[Postępowanie według instrukcji]
+    PI --> HELP[Wyświetlenie pomocy]
+
+    %% Relacje Include
+    PI -.->|«include»| CANCEL[Anulowanie transakcji]
+
+    %% Asocjacja anulowania – użytkownik może przerwać proces w dowolnym momencie
+    U --- CANCEL
+```
 
 
 ## Diagram sekwencyj
@@ -251,6 +293,7 @@ sequenceDiagram
         UI->>USER: Komunikat o anulowaniu
     end
 ```
+
 
 
 
