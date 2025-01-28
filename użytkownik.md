@@ -346,3 +346,67 @@ sequenceDiagram
 ```
 
 
+# Diagramy klas
+
+## OPIS KLAS
+### KLASY
+## UŻYTKOWNIK
+### Atrybuty:
+- `String nazwaUzytkownika` (opcjonalnie, jeśli w systemie w ogóle śledzimy nazwę użytkownika)
+- `String preferowanyJezyk` (jeśli chcemy zachować informację o preferencjach; w zależności od potrzeb projektu)
+### Metody:
+- `void rozpocznijInterakcje()` – użytkownik inicjuje proces (np. przez dotknięcie ekranu)
+- `void wybierzJezyk(Jezyk jezyk)` – wybranie żądanego języka z listy dostępnych
+- `void anulujTransakcje()` – możliwość anulowania procesu w dowolnym momencie
+## BILETOMAT
+### Atrybuty:
+- `String domyslnyJezyk` – domyślnie ustawiony język (wykorzystywany, gdy użytkownik nie dokonuje wyboru)
+- `List<Jezyk> dostepneJezyki` – lista wszystkich dostępnych języków do wyboru
+- `List<Jezyk> popularneJezyki` – lista popularnych języków (wykorzystywana w scenariuszu rozszerzenia „Lista popularnych języków”)
+- `String aktualnyJezyk` – aktualnie wybrany język (ustawiany po wyborze użytkownika)
+### Metody:
+- `void wyswietlOpcjeJezyka()` – wyświetla dostępne opcje językowe na ekranie
+- `void wyswietlPopularneJezyki()` – wyświetla rozszerzoną listę popularnych języków (relacja «extend»)
+- `void ustawJezyk(Jezyk jezyk)` – ustawia wybrany język jako aktualny
+- `void ustawDomyslnyJezyk()` – ustawia język domyślny (relacja «include», jeśli użytkownik nie wybrał innego)
+- `void anulujProces()` – obsługuje anulowanie transakcji językowej
+## JEZYK
+### Atrybuty:
+- `String nazwa` – np. „Polski”, „English”, „Deutsch”
+- `String kod` – kod języka, np. „pl-PL”, „en-GB”, „de-DE”
+
+```mermaid
+classDiagram
+
+    class Uzytkownik {
+        - String nazwaUzytkownika
+        - String preferowanyJezyk
+        + void rozpocznijInterakcje()
+        + void wybierzJezyk(Jezyk jezyk)
+        + void anulujTransakcje()
+    }
+
+    class Biletomat {
+        - String domyslnyJezyk
+        - List<Jezyk> dostepneJezyki
+        - List<Jezyk> popularneJezyki
+        - String aktualnyJezyk
+        + void wyswietlOpcjeJezyka()
+        + void wyswietlPopularneJezyki()
+        + void ustawJezyk(Jezyk jezyk)
+        + void ustawDomyslnyJezyk()
+        + void anulujProces()
+    }
+
+    class Jezyk {
+        - String nazwa
+        - String kod
+    }
+
+    %% Relacje
+    Uzytkownik --> Biletomat : korzysta z
+    Biletomat --> Jezyk : posiada listę
+
+```
+
+
