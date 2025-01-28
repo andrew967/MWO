@@ -266,6 +266,65 @@ sequenceDiagram
     BT->>U: Przejście do dalszej części zakupu <br/> lub powrót do ekranu głównego
 
 ```
+# Diagramy klas
+## OPIS KLAS
+### KLASY
+#### UŻYTKOWNIK
+**Atrybuty**  
+- `String preferowanyJezyk`
+**Metody**  
+- `void wybierzJezyk(Jezyk jezyk)` 
+- `void anulujWybor()` 
+#### BILETOMAT
+**Atrybuty**  
+- `String aktualnyJezyk`
+- `String domyslnyJezyk`
+- `List<Jezyk> dostepneJezyki`
+- `List<Jezyk> popularneJezyki`  
+**Metody**  
+- `void wyswietlOpcjeJezyka()` 
+- `void wyswietlPopularneJezyki()`   
+- `void ustawJezyk(Jezyk jezyk)` 
+- `void ustawDomyslnyJezyk()` 
+- `void anulujWybor()` 
+#### JEZYK
+**Atrybuty**  
+- `String nazwa` 
+- `String kod` 
+### RELACJE
+1. **UŻYTKOWNIK** –> **BILETOMAT** 
+2. **BILETOMAT** –> **JEZYK**  
+3. „Opcje językowe” (relacja *include*) mogą automatycznie ustawić domyślny język, jeśli użytkownik nie dokona własnego wyboru.  
+4. „Lista popularnych języków” (relacja *extend*) pojawia się w sytuacji, gdy użytkownik poprosi o dodatkowe opcje językowe poza standardowymi.  
+```mermaid
+classDiagram
+
+    class Uzytkownik {
+        - String preferowanyJezyk
+        + void wybierzJezyk(Jezyk jezyk)
+        + void anulujWybor()
+    }
+
+    class Biletomat {
+        - String aktualnyJezyk
+        - String domyslnyJezyk
+        - List<Jezyk> dostepneJezyki
+        - List<Jezyk> popularneJezyki
+        + void wyswietlOpcjeJezyka()
+        + void wyswietlPopularneJezyki()
+        + void ustawJezyk(Jezyk jezyk)
+        + void ustawDomyslnyJezyk()
+        + void anulujWybor()
+    }
+
+    class Jezyk {
+        - String nazwa
+        - String kod
+    }
+
+    Uzytkownik --> Biletomat : korzysta z
+    Biletomat --> Jezyk : posiada
+```
 
 
 
