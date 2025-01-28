@@ -345,6 +345,95 @@ sequenceDiagram
     end
 ```
 
+## Diagramy klas 
+### Sprawdzenie poprawności transakcji
+
+### OPIS KLAS
+
+### KLASY
+
+#### TRANSAKCJA
+- **Metody:**
+  - `void wybierzBiletIMetodePlatnosci()` – Umożliwia użytkownikowi wybór biletu i metody płatności.
+  - `void wyswietlPodsumowanie()` – Generuje i wyświetla podsumowanie transakcji.
+  - `void potwierdzWybór()` – Pozwala użytkownikowi zatwierdzić wybór.
+  - `void anulujTransakcje()` – Obsługuje anulowanie transakcji.
+  - `void sprawdzPoprawnoscDanych()` – Sprawdza poprawność danych w systemie.
+
+#### BILET
+- **Atrybuty:**
+  - `String typ` – Typ biletu (np. jednorazowy, miesięczny).
+  - `double cena` – Cena biletu.
+- **Metody:**
+  - `String getTyp()` – Zwraca typ biletu.
+  - `double getCena()` – Zwraca cenę biletu.
+
+#### PLATNOSC
+- **Atrybuty:**
+  - `String metoda` – Wybrana metoda płatności (np. karta, gotówka).
+- **Metody:**
+  - `String getMetoda()` – Zwraca metodę płatności.
+  - `void zatwierdzPlatnosc()` – Zatwierdza płatność.
+
+#### SERWER
+- **Metody:**
+  - `void przetworzDane()` – Przetwarza dane transakcji.
+  - `void weryfikujDane()` – Weryfikuje dane użytkownika i płatności.
+
+#### BAZADANYCH
+- **Metody:**
+  - `boolean sprawdzDane(String dane)` – Sprawdza poprawność danych w bazie.
+
+#### INTERFEJS
+- **Metody:**
+  - `void wyswietlPodsumowanie(String podsumowanie)` – Wyświetla podsumowanie transakcji użytkownikowi.
+  - `void wyswietlKomunikat(String komunikat)` – Wyświetla komunikaty użytkownikowi.
+
+---
+
+## RELACJE:
+- `TRANSAKCJA` zarządza obiektami `BILET` i `PLATNOSC`.
+- `INTERFEJS` przesyła dane do `SERWER`, który komunikuje się z `BAZADANYCH`.
+- `INTERFEJS` odpowiada za wyświetlanie podsumowania i komunikatów użytkownikowi.
+  
+```mermaid
+classDiagram
+class TRANSAKCJA {
+  + void wybierzBiletIMetodePlatnosci()
+  + void wyswietlPodsumowanie()
+  + void potwierdzWybór()
+  + void anulujTransakcje()
+  + void sprawdzPoprawnoscDanych()
+}
+class BILET {
+  - String typ
+  - double cena
+  + String getTyp()
+  + double getCena()
+}
+class PLATNOSC {
+  - String metoda
+  + String getMetoda()
+  + void zatwierdzPlatnosc()
+}
+class SERWER {
+  + void przetworzDane()
+  + void weryfikujDane()
+}
+class BAZADANYCH {
+  + boolean sprawdzDane(String dane)
+}
+class INTERFEJS {
+  + void wyswietlPodsumowanie(String podsumowanie)
+  + void wyswietlKomunikat(String komunikat)
+}
+
+TRANSAKCJA --> BILET : zarządza
+TRANSAKCJA --> PLATNOSC : obsługuje
+TRANSAKCJA --> INTERFEJS : wykorzystuje
+INTERFEJS --> SERWER : przesyła dane
+SERWER --> BAZADANYCH : weryfikuje
+```
 
 # Diagramy klas
 
@@ -410,3 +499,95 @@ classDiagram
 ```
 
 
+
+## OPIS KLAS
+
+### KLASY
+#### BILETOMAT
+- **ATRYBUTY:** 
+  - `STRING ID_BILETOMATU`
+  - `BOOLEAN CZY_DOSTEPNY`
+  - `LIST<BILET> LISTA_BILETOW`
+- **METODY:**
+  - `VOID URUCHOM_EKRAN()`
+  - `LIST<BILET> POBIERZ_LISTE_BILETOW()`
+  - `VOID WYSWIETL_BILETY()`
+  - `VOID WYSWIETL_KOMUNIKAT_O_BLEDZIE()`
+  - `VOID GENERUJ_POTWIERDZENIE(STRING FORMA)`
+  - `VOID WYSWIETL_KOMUNIKAT_O_ZAKONCZENIU()`
+  - `VOID ANULUJ_TRANSAKCJE()`
+
+#### SYSTEM CENTRALNY
+- **ATRYBUTY:** 
+  - `LIST<BILET> DOSTEPNE_BILETY`
+- **METODY:**
+  - `LIST<BILET> ZWROC_DOSTEPNE_BILETY()`
+
+#### BILET
+- **ATRYBUTY:** 
+  - `STRING NAZWA`
+  - `DOUBLE CENA`
+  - `STRING KATEGORIA`
+- **METODY:**
+  - `STRING POBIERZ_OPIS()`
+
+#### UZYTKOWNIK
+- **ATRYBUTY:** 
+  - `STRING ID_UZYTKOWNIKA`
+  - `STRING WYBRANY_BILET`
+  - `STRING WYBRANA_FORMA_POTWIERDZENIA`
+- **METODY:**
+  - `VOID WYBIERZ_BILET(STRING BILET)`
+  - `VOID WYBIERZ_FORME_POTWIERDZENIA(STRING FORMA)`
+  - `VOID ODBIERZ_POTWIERDZENIE()`
+
+### RELACJE
+- `BILETOMAT` jest połączony z `SYSTEM CENTRALNY` poprzez pobieranie listy dostępnych biletów (asocjacja).
+- `BILETOMAT` wyświetla informacje o `BILET` (kompozycja).
+- `UZYTKOWNIK` komunikuje się z `BILETOMAT` poprzez wybór biletu oraz formy potwierdzenia (asocjacja).
+- `UZYTKOWNIK` odbiera potwierdzenie od `BILETOMAT` (asocjacja).
+
+### WIZUALIZACJA DIAGRAMU KLAS
+```mermaid
+classDiagram
+
+class Biletomat {
+  - STRING ID_BILETOMATU
+  - BOOLEAN CZY_DOSTEPNY
+  - LIST<BILET> LISTA_BILETOW
+  + VOID URUCHOM_EKRAN()
+  + LIST<BILET> POBIERZ_LISTE_BILETOW()
+  + VOID WYSWIETL_BILETY()
+  + VOID WYSWIETL_KOMUNIKAT_O_BLEDZIE()
+  + VOID GENERUJ_POTWIERDZENIE(STRING FORMA)
+  + VOID WYSWIETL_KOMUNIKAT_O_ZAKONCZENIU()
+  + VOID ANULUJ_TRANSAKCJE()
+}
+
+class SystemCentralny {
+  - LIST<BILET> DOSTEPNE_BILETY
+  + LIST<BILET> ZWROC_DOSTEPNE_BILETY()
+}
+
+class Bilet {
+  - STRING NAZWA
+  - DOUBLE CENA
+  - STRING KATEGORIA
+  + STRING POBIERZ_OPIS()
+}
+
+class Uzytkownik {
+  - STRING ID_UZYTKOWNIKA
+  - STRING WYBRANY_BILET
+  - STRING WYBRANA_FORMA_POTWIERDZENIA
+  + VOID WYBIERZ_BILET(STRING BILET)
+  + VOID WYBIERZ_FORME_POTWIERDZENIA(STRING FORMA)
+  + VOID ODBIERZ_POTWIERDZENIE()
+}
+
+Biletomat --> SystemCentralny : Pobiera dane
+Biletomat o-- Bilet : Wyświetla szczegóły
+Uzytkownik --> Biletomat : Wybiera bilet
+Uzytkownik --> Biletomat : Wybiera formę potwierdzenia
+Uzytkownik --> Biletomat : Odbiera potwierdzenie
+```
