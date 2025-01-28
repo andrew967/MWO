@@ -352,6 +352,82 @@ BILETOMAT --> PODSTAWOWEINSTRUKCJE : <<include>>
 BILETOMAT --> SZCZEGOLOWAPOMOC : <<extend>>
 BILETOMAT --> ANULOWANIETRANSAKCJI : <<include>>
 
+
 ```
+## OPIS KLAS
 
+### KLASY
+#### BILETOMAT
+- **ATRYBUTY:** 
+  - `STRING ID_BILETOMATU`
+  - `BOOLEAN CZY_DOSTEPNY`
+  - `LIST<BILET> LISTA_BILETOW`
+- **METODY:**
+  - `VOID URUCHOM_EKRAN()`
+  - `LIST<BILET> POBIERZ_LISTE_BILETOW()`
+  - `VOID WYSWIETL_BILETY()`
+  - `VOID WYSWIETL_KOMUNIKAT_O_BLEDZIE()`
 
+#### SYSTEM CENTRALNY
+- **ATRYBUTY:** 
+  - `LIST<BILET> DOSTEPNE_BILETY`
+- **METODY:**
+  - `LIST<BILET> ZWROC_DOSTEPNE_BILETY()`
+
+#### BILET
+- **ATRYBUTY:** 
+  - `STRING NAZWA`
+  - `DOUBLE CENA`
+  - `STRING KATEGORIA`
+- **METODY:**
+  - `STRING POBIERZ_OPIS()`
+
+#### UZYTKOWNIK
+- **ATRYBUTY:** 
+  - `STRING ID_UZYTKOWNIKA`
+  - `STRING WYBRANY_BILET`
+- **METODY:**
+  - `VOID WYBIERZ_BILET(STRING BILET)`
+
+### RELACJE
+- `BILETOMAT` jest połączony z `SYSTEM CENTRALNY` poprzez pobieranie listy dostępnych biletów (asocjacja).
+- `BILETOMAT` wyświetla informacje o `BILET` (kompozycja).
+- `UZYTKOWNIK` komunikuje się z `BILETOMAT` poprzez wybór biletu (asocjacja).
+
+### WIZUALIZACJA DIAGRAMU KLAS
+```mermaid
+classDiagram
+
+class Biletomat {
+  - STRING ID_BILETOMATU
+  - BOOLEAN CZY_DOSTEPNY
+  - LIST<BILET> LISTA_BILETOW
+  + VOID URUCHOM_EKRAN()
+  + LIST<BILET> POBIERZ_LISTE_BILETOW()
+  + VOID WYSWIETL_BILETY()
+  + VOID WYSWIETL_KOMUNIKAT_O_BLEDZIE()
+}
+
+class SystemCentralny {
+  - LIST<BILET> DOSTEPNE_BILETY
+  + LIST<BILET> ZWROC_DOSTEPNE_BILETY()
+}
+
+class Bilet {
+  - STRING NAZWA
+  - DOUBLE CENA
+  - STRING KATEGORIA
+  + STRING POBIERZ_OPIS()
+}
+
+class Uzytkownik {
+  - STRING ID_UZYTKOWNIKA
+  - STRING WYBRANY_BILET
+  + VOID WYBIERZ_BILET(STRING BILET)
+}
+
+Biletomat --> SystemCentralny : Pobiera dane
+Biletomat o-- Bilet : Wyświetla szczegóły
+Uzytkownik --> Biletomat : Wybiera bilet
+
+```

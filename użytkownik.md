@@ -436,3 +436,94 @@ SERWER --> BAZADANYCH : weryfikuje
 
 ```
 
+## OPIS KLAS
+
+### KLASY
+#### BILETOMAT
+- **ATRYBUTY:** 
+  - `STRING ID_BILETOMATU`
+  - `BOOLEAN CZY_DOSTEPNY`
+  - `LIST<BILET> LISTA_BILETOW`
+- **METODY:**
+  - `VOID URUCHOM_EKRAN()`
+  - `LIST<BILET> POBIERZ_LISTE_BILETOW()`
+  - `VOID WYSWIETL_BILETY()`
+  - `VOID WYSWIETL_KOMUNIKAT_O_BLEDZIE()`
+  - `VOID GENERUJ_POTWIERDZENIE(STRING FORMA)`
+  - `VOID WYSWIETL_KOMUNIKAT_O_ZAKONCZENIU()`
+  - `VOID ANULUJ_TRANSAKCJE()`
+
+#### SYSTEM CENTRALNY
+- **ATRYBUTY:** 
+  - `LIST<BILET> DOSTEPNE_BILETY`
+- **METODY:**
+  - `LIST<BILET> ZWROC_DOSTEPNE_BILETY()`
+
+#### BILET
+- **ATRYBUTY:** 
+  - `STRING NAZWA`
+  - `DOUBLE CENA`
+  - `STRING KATEGORIA`
+- **METODY:**
+  - `STRING POBIERZ_OPIS()`
+
+#### UZYTKOWNIK
+- **ATRYBUTY:** 
+  - `STRING ID_UZYTKOWNIKA`
+  - `STRING WYBRANY_BILET`
+  - `STRING WYBRANA_FORMA_POTWIERDZENIA`
+- **METODY:**
+  - `VOID WYBIERZ_BILET(STRING BILET)`
+  - `VOID WYBIERZ_FORME_POTWIERDZENIA(STRING FORMA)`
+  - `VOID ODBIERZ_POTWIERDZENIE()`
+
+### RELACJE
+- `BILETOMAT` jest połączony z `SYSTEM CENTRALNY` poprzez pobieranie listy dostępnych biletów (asocjacja).
+- `BILETOMAT` wyświetla informacje o `BILET` (kompozycja).
+- `UZYTKOWNIK` komunikuje się z `BILETOMAT` poprzez wybór biletu oraz formy potwierdzenia (asocjacja).
+- `UZYTKOWNIK` odbiera potwierdzenie od `BILETOMAT` (asocjacja).
+
+### WIZUALIZACJA DIAGRAMU KLAS
+```mermaid
+classDiagram
+
+class Biletomat {
+  - STRING ID_BILETOMATU
+  - BOOLEAN CZY_DOSTEPNY
+  - LIST<BILET> LISTA_BILETOW
+  + VOID URUCHOM_EKRAN()
+  + LIST<BILET> POBIERZ_LISTE_BILETOW()
+  + VOID WYSWIETL_BILETY()
+  + VOID WYSWIETL_KOMUNIKAT_O_BLEDZIE()
+  + VOID GENERUJ_POTWIERDZENIE(STRING FORMA)
+  + VOID WYSWIETL_KOMUNIKAT_O_ZAKONCZENIU()
+  + VOID ANULUJ_TRANSAKCJE()
+}
+
+class SystemCentralny {
+  - LIST<BILET> DOSTEPNE_BILETY
+  + LIST<BILET> ZWROC_DOSTEPNE_BILETY()
+}
+
+class Bilet {
+  - STRING NAZWA
+  - DOUBLE CENA
+  - STRING KATEGORIA
+  + STRING POBIERZ_OPIS()
+}
+
+class Uzytkownik {
+  - STRING ID_UZYTKOWNIKA
+  - STRING WYBRANY_BILET
+  - STRING WYBRANA_FORMA_POTWIERDZENIA
+  + VOID WYBIERZ_BILET(STRING BILET)
+  + VOID WYBIERZ_FORME_POTWIERDZENIA(STRING FORMA)
+  + VOID ODBIERZ_POTWIERDZENIE()
+}
+
+Biletomat --> SystemCentralny : Pobiera dane
+Biletomat o-- Bilet : Wyświetla szczegóły
+Uzytkownik --> Biletomat : Wybiera bilet
+Uzytkownik --> Biletomat : Wybiera formę potwierdzenia
+Uzytkownik --> Biletomat : Odbiera potwierdzenie
+```
