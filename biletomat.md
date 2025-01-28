@@ -267,6 +267,93 @@ sequenceDiagram
 
 ```
 
+## Diagramy klas
+### Wyświetlanie instrukcji
+## OPIS KLAS
+
+### KLASY
+
+#### BILETOMAT
+- **Atrybuty:** brak
+- **Metody:**
+  - `void wyswietlInstrukcje()` – Wyświetla krokowe instrukcje dla użytkownika.
+  - `void monitorujAktywnosc()` – Monitoruje aktywność użytkownika.
+  - `void dostosujInstrukcje()` – Dostosowuje wyświetlane instrukcje w czasie rzeczywistym.
+  - `void wyswietlKomunikatyPomocnicze()` – Wyświetla komunikaty pomocnicze w przypadku błędów użytkownika.
+  - `void anulujTransakcje()` – Anuluje trwającą transakcję.
+
+#### INSTRUKCJA
+- **Atrybuty:**
+  - `String tresc` – Treść instrukcji.
+  - `String typ` – Typ instrukcji (np. podstawowa, szczegółowa).
+- **Metody:**
+  - `void wyswietl()` – Wyświetla instrukcję.
+
+#### UZYTKOWNIK
+- **Atrybuty:**
+  - `boolean aktywnosc` – Status aktywności użytkownika.
+- **Metody:**
+  - `void interakcja()` – Rejestruje interakcję użytkownika z biletomatem.
+  - `void anulujTransakcje()` – Pozwala użytkownikowi anulować transakcję.
+
+#### PODSTAWOWEINSTRUKCJE
+- **Metody:**
+  - `void wyswietlPodstawoweInstrukcje()` – Wyświetla podstawowe instrukcje krokowe.
+
+#### SZCZEGOLOWAPOMOC
+- **Metody:**
+  - `void wyswietlSzczegolowaPomoc()` – Wyświetla szczegółowe instrukcje, gdy użytkownik napotka problemy.
+
+#### ANULOWANIETRANSAKCJI
+- **Metody:**
+  - `void wykonajAnulowanie()` – Wykonuje anulowanie transakcji.
+
+---
+
+### RELACJE:
+- `BILETOMAT` jest powiązany z `INSTRUKCJA` – Wyświetla instrukcje użytkownikowi.
+- `BILETOMAT` monitoruje aktywność `UZYTKOWNIK`.
+- `BILETOMAT` korzysta z `PODSTAWOWEINSTRUKCJE` poprzez relację `<<include>>`.
+- `BILETOMAT` wywołuje `SZCZEGOLOWAPOMOC` w sytuacjach wyjątkowych poprzez relację `<<extend>>`.
+- `BILETOMAT` korzysta z `ANULOWANIETRANSAKCJI` w przypadku anulowania operacji przez użytkownika (`<<include>>`).
+  
+```mermaid
+classDiagram
+class BILETOMAT {
+  + void wyswietlInstrukcje()
+  + void monitorujAktywnosc()
+  + void dostosujInstrukcje()
+  + void wyswietlKomunikatyPomocnicze()
+  + void anulujTransakcje()
+}
+class INSTRUKCJA {
+  - String tresc
+  - String typ
+  + void wyswietl()
+}
+class UZYTKOWNIK {
+  - boolean aktywnosc
+  + void interakcja()
+  + void anulujTransakcje()
+}
+class PODSTAWOWEINSTRUKCJE {
+  + void wyswietlPodstawoweInstrukcje()
+}
+class SZCZEGOLOWAPOMOC {
+  + void wyswietlSzczegolowaPomoc()
+}
+class ANULOWANIETRANSAKCJI {
+  + void wykonajAnulowanie()
+}
+
+BILETOMAT --> INSTRUKCJA : wyswietla
+BILETOMAT --> UZYTKOWNIK : monitoruje
+BILETOMAT --> PODSTAWOWEINSTRUKCJE : <<include>>
+BILETOMAT --> SZCZEGOLOWAPOMOC : <<extend>>
+BILETOMAT --> ANULOWANIETRANSAKCJI : <<include>>
+
+
+```
 ## OPIS KLAS
 
 ### KLASY
@@ -342,6 +429,5 @@ class Uzytkownik {
 Biletomat --> SystemCentralny : Pobiera dane
 Biletomat o-- Bilet : Wyświetla szczegóły
 Uzytkownik --> Biletomat : Wybiera bilet
+
 ```
-
-
